@@ -1,0 +1,2 @@
+/home/Usuario/Asistencia/build/CMakeFiles/rebuild_cache.dir
+/home/Usuario/Asistencia/build/CMakeFiles/edit_cache.dir

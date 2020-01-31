@@ -63,6 +63,21 @@ class gui():
         nineBtn.connect("clicked", self.inputNumber)
         grid.attach(nineBtn, 3, 3, 1, 1)
 
+        deleteBtn = Gtk.Button(label="<")
+        deleteBtn.set_size_request(40, 40)
+        deleteBtn.connect("clicked", self.inputDelete)
+        grid.attach(deleteBtn, 1, 4, 1, 1)
+
+        zeroBtn = Gtk.Button(label="0")
+        zeroBtn.set_size_request(40, 40)
+        zeroBtn.connect("clicked", self.inputNumber)
+        grid.attach(zeroBtn, 2, 4, 1, 1)
+
+        aproBtn = Gtk.Button(label="✓")
+        aproBtn.set_size_request(40, 40)
+        aproBtn.connect("clicked", self.inputAprobar)
+        grid.attach(aproBtn, 3, 4, 1, 1)
+
         self.window.set_border_width(10)
         self.window.set_title("ASISTENCIA")
         self.window.set_decorated(False)
@@ -71,6 +86,7 @@ class gui():
 
 
         self.labelTime = Gtk.Label()
+        self.labelTime.set_size_request(100, 60)
         grid.attach(self.labelTime, 0, 1, 1, 1)
         self.label = Gtk.Label()
         grid.attach(self.label, 1, 0, 1, 1)
@@ -80,8 +96,17 @@ class gui():
         Gtk.main()
 
     def inputNumber(self,button):
-        text = self.label.get_label() + button.get_label()
+        if(len(self.label.get_label())<4):
+            text = self.label.get_label() + button.get_label()
+            self.label.set_text(text)
+    
+    def inputDelete(self,button):
+        text = self.label.get_label()[:-1]
         self.label.set_text(text)
+    
+    def inputAprobar(self,button):
+        ####
+        self.label.set_text("")
 
     def on_button_clicked(self, widget):
         Gtk.main_quit()
