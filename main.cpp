@@ -21,9 +21,13 @@
 #include <cairo.h>
 #include <ctime>
 #include <thread>
+#include "sqlite3.h"
 
 using namespace std;
 
+//g++ main.cpp -o salida `pkg-config --cflags --libs gtk+-3.0 `  -export-dynamic -lX11
+//MSYS2:  g++ main.cpp -o salida `pkg-config --cflags --libs gtk+-3.0 ` -lm -lpthread -lgdi32
+//https://github.com/babai95/OpenCV-Real-Time-Face-Recognition-Using-SQLite-Database
 
 GtkBuilder *builder; 
 GtkWidget *window;
@@ -32,8 +36,12 @@ GtkWidget *labelTime,*labelDate,*labelOption;
 GdkPixbuf *pixbuf,*icono, *pixred, *pixblue, *pixgreen;
 GtkListStore *liststore;
 GtkFileFilter *filter;
-//g++ main.cpp -o salida `pkg-config --cflags --libs gtk+-3.0 `  -export-dynamic -lX11
-//MSYS2:  g++ main.cpp -o salida `pkg-config --cflags --libs gtk+-3.0 ` -lm -lpthread -lgdi32
+
+sqlite3 *db;
+char *error = 0;
+int res;
+char *sql;
+
 
 void on_window_main_destroy()
 {
@@ -82,19 +90,17 @@ void update()
     gtk_label_set_text((GtkLabel *)labelTime,hora.c_str());
 }
 
+void registrarPersona(){
+    gtk_widget_hide (window);
+}
 int main(int argc, char* argv[])
 {
-    /*gtk_init(&argc, &argv);
-    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "ASISTENCIA");
-    gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
-    gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
-    */
-
+    
     gtk_init(&argc, &argv);
 
     builder = gtk_builder_new();
     gtk_builder_add_from_file (builder, "main.glade", NULL);
+    gtk_builder_add_from_file (builder, "addPerson.glade", NULL);
     
     window = GTK_WIDGET(gtk_builder_get_object(builder, "window"));
     labelOption = GTK_WIDGET(gtk_builder_get_object(builder, "label1"));
